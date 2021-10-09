@@ -1,6 +1,8 @@
+// use std::{sync::mpsc::channel, thread};
 use anchor_lang::AccountDeserialize;
 use gumdrop::Options;
 use nft_candy_machine::{CandyMachine, Config};
+use rusqlite::{params, Connection};
 use solana_account_decoder::UiAccountEncoding;
 use solana_client::{
     rpc_client::RpcClient,
@@ -22,41 +24,44 @@ struct AppOptions {
     #[options(help = "Solana rpc server url", default_expr = "default_rpc_url()")]
     rpc_url: String,
 
+    #[options(help = "slite db path", default_expr = "default_db_path()")]
+    db_path: String,
+
     #[options(command)]
     command: Option<Command>,
 }
 
-#[derive(Clone, Debug, Options)]
-struct FindMetadataAccountsOpts {
-    #[options(help = "update authority address")]
-    update_authority: String,
-}
-
-#[derive(Clone, Debug, Options)]
-struct ListTokensOpts {
-    #[options(help = "update authority address")]
-    update_authority: String,
-}
-
 // #[derive(Clone, Debug, Options)]
-// struct ListTransactionsOpts {
-//     #[options(free)]
-//     args: Vec<String>,
-//     #[options(help = "search for transactions before this one")]
-//     before: Option<String>,
+// struct FindMetadataAccounts {
+//     #[options(help = "update authority address")]
+//     update_authority: String,
 // }
 
 #[derive(Clone, Debug, Options)]
-struct ShowCandyMachineOpts {
+struct ListTokenParams {
+    #[options(help = "update authority address")]
+    update_authority: String,
+}
+
+#[derive(Clone, Debug, Options)]
+struct MineTokensByUpdateAuthority {
+    #[options(help = "update authority address")]
+    update_authority: String,
+}
+
+#[derive(Clone, Debug, Options)]
+struct ShowCandyMachine {
     #[options(free)]
     args: Vec<String>,
 }
 
 #[derive(Clone, Debug, Options)]
 enum Command {
-    FindMetadataAccounts(FindMetadataAccountsOpts),
-    ShowCandyMachine(ShowCandyMachineOpts),
-    ListTokens(ListTokensOpts),
+    // FindMetadataAccounts(FindMetadataAccounts),
+    ShowCandyMachine(ShowCandyMachine),
+    ListTokens(ListTokenParams), // eventually remove / retire
+    // MineTokensByCandyMachine(MineTokensWithUpdateAuthority),
+    MineTokensByUpdateAuthority(MineTokensByUpdateAuthority),
     // ListHolders(),
 }
 
@@ -77,8 +82,11 @@ fn main() {
     match app_options.clone().command {
         Some(command) => match command {
             Command::ShowCandyMachine(opts) => show_candy_machine(app_options, opts),
-            Command::FindMetadataAccounts(opts) => find_metadata_accounts(app_options, opts),
+            // Command::FindMetadataAccounts(opts) => find_metadata_accounts(app_options, opts),
             Command::ListTokens(opts) => list_tokens(app_options, opts),
+            Command::MineTokensByUpdateAuthority(opts) => {
+                mine_tokens_by_update_authority(app_options, opts)
+            }
             // Command::ListTransactions(_) => todo!(), // list_transactions(app_options, opts),
             // Command::ListHolders => todo!(),
         },
@@ -86,7 +94,7 @@ fn main() {
     }
 }
 
-fn find_metadata_accounts(app_options: AppOptions, opts: FindMetadataAccountsOpts) {
+fn list_tokens(app_options: AppOptions, opts: ListTokenParams) {
     let client = RpcClient::new(app_options.rpc_url);
 
     let cfg = RpcProgramAccountsConfig {
@@ -111,58 +119,39 @@ fn find_metadata_accounts(app_options: AppOptions, opts: FindMetadataAccountsOpt
         .expect("could not get program accounts");
 
     for (pubkey, _account) in program_accounts {
-        println!("{}", pubkey);
+        let sigs = client.get_signatures_for_address(&pubkey);
+        if let Err(err) = sigs {
+            eprintln!("could not get signatures {} {:?}", pubkey, err);
+            continue;
+        }
 
-        // Getting Metadata:
-        // let mut buf = account.data();
-        // let metadata = Metadata::deserialize(&mut buf).expect("could not deserialize metadata");
-        // println!("\t{}", metadata.update_authority);
-    }
-}
-
-fn list_tokens(app_options: AppOptions, opts: ListTokensOpts) {
-    let client = RpcClient::new(app_options.rpc_url);
-
-    let cfg = RpcProgramAccountsConfig {
-        account_config: RpcAccountInfoConfig {
-            encoding: Some(UiAccountEncoding::Base64Zstd),
-            ..RpcAccountInfoConfig::default()
-        },
-        filters: Some(vec![RpcFilterType::Memcmp(Memcmp {
-            offset: 1,
-            bytes: MemcmpEncodedBytes::Binary(opts.update_authority),
-            encoding: None,
-        })]),
-        ..RpcProgramAccountsConfig::default()
-    };
-
-    let pubkey = &"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
-        .parse()
-        .unwrap();
-
-    let program_accounts = client
-        .get_program_accounts_with_config(pubkey, cfg)
-        .expect("could not get program accounts");
-
-    for (pubkey, _account) in program_accounts {
-        let sigs = client
-            .get_signatures_for_address(&pubkey)
-            .expect("could not get metadata signatures");
-
+        let sigs = sigs.unwrap();
         if sigs.len() >= 1000 {
-            panic!("too many sigs {} {}", pubkey, sigs.len())
+            eprintln!("too many sigs {} {}", pubkey, sigs.len());
+            continue;
+        }
+        if sigs.len() < 1 {
+            eprintln!("not enough sigs {} {}", pubkey, sigs.len());
+            continue;
         }
 
         let sig = sigs.last().unwrap();
         let sig = sig.signature.parse().unwrap();
 
-        let tx = client
-            .get_transaction(&sig, UiTransactionEncoding::Base58)
-            .expect("could not get transaction");
+        let tx = client.get_transaction(&sig, UiTransactionEncoding::Base58);
+        if let Err(err) = tx {
+            eprintln!("couldn't get transaction {} {}", sig, err);
+            continue;
+        }
 
-        let tx = tx.transaction;
-        let tx = tx.transaction.decode().expect("could not decode sig tx");
+        let tx = tx.unwrap().transaction;
+        let tx = tx.transaction.decode();
+        if let None = tx {
+            eprintln!("could not decode sig tx {} {}", pubkey, sig);
+            continue;
+        }
 
+        let tx = tx.unwrap();
         let msg = tx.message();
         if msg.instructions.len() != 5 {
             eprintln!(
@@ -173,16 +162,132 @@ fn list_tokens(app_options: AppOptions, opts: ListTokensOpts) {
             continue;
         }
 
-        let token_address = msg
-            .account_keys
-            .get(1)
-            .expect("could not get token address");
+        let token_address = msg.account_keys.get(1);
+        if let None = token_address {
+            eprintln!("couldn't get token address {}", sig);
+            continue;
+        }
 
+        let token_address = token_address.unwrap();
         println!("{}", token_address);
     }
 }
 
-fn show_candy_machine(app_options: AppOptions, opts: ShowCandyMachineOpts) {
+fn mine_tokens_by_update_authority(app_options: AppOptions, opts: MineTokensByUpdateAuthority) {
+    let client = RpcClient::new(app_options.rpc_url);
+    let db = Connection::open(app_options.db_path).expect("could not open db");
+
+    db.execute(
+        "create table if not exists tokens (
+             token_address text primary key,
+             metadata_address text unique,
+             genesis_signature text unique
+         )",
+        params![],
+    )
+    .expect("could not create tokens table");
+
+    let cfg = RpcProgramAccountsConfig {
+        account_config: RpcAccountInfoConfig {
+            encoding: Some(UiAccountEncoding::Base64Zstd),
+            ..RpcAccountInfoConfig::default()
+        },
+        filters: Some(vec![RpcFilterType::Memcmp(Memcmp {
+            offset: 1,
+            bytes: MemcmpEncodedBytes::Binary(opts.update_authority),
+            encoding: None,
+        })]),
+        ..RpcProgramAccountsConfig::default()
+    };
+
+    let pubkey = &"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+        .parse()
+        .unwrap();
+
+    let metadata_accounts = client
+        .get_program_accounts_with_config(pubkey, cfg)
+        .expect("could not get program accounts");
+
+    for (metadata_address, _account) in metadata_accounts {
+        eprint!("{}", ".");
+
+        let count: Result<u8, rusqlite::Error> = db.query_row(
+            "select count(*) from tokens where metadata_address = ?1",
+            params![metadata_address.to_string()],
+            |row| row.get(0),
+        );
+
+        let count = count.unwrap();
+        if count >= 1u8 {
+            continue;
+        }
+
+        let sigs = client.get_signatures_for_address(&metadata_address);
+        if let Err(err) = sigs {
+            eprintln!("\ncould not get signatures {} {:?}", pubkey, err);
+            continue;
+        }
+
+        let sigs = sigs.unwrap();
+        if sigs.len() >= 1000 {
+            eprintln!("\ntoo many sigs {} {}", pubkey, sigs.len());
+            continue;
+        }
+        if sigs.len() < 1 {
+            eprintln!("\nnot enough sigs {} {}", pubkey, sigs.len());
+            continue;
+        }
+
+        let sig = sigs.last().unwrap();
+        let sig = sig.signature.parse().unwrap();
+
+        let tx = client.get_transaction(&sig, UiTransactionEncoding::Base58);
+        if let Err(err) = tx {
+            eprintln!("\ncouldn't get transaction {} {}", sig, err);
+            continue;
+        }
+
+        let tx = tx.unwrap().transaction;
+        let tx = tx.transaction.decode();
+        if let None = tx {
+            eprintln!("\ncould not decode sig tx {} {}", pubkey, sig);
+            continue;
+        }
+
+        let tx = tx.unwrap();
+        let msg = tx.message();
+        if msg.instructions.len() != 5 {
+            eprintln!(
+                "\ninvalid instruction count {} {}",
+                pubkey,
+                msg.instructions.len()
+            );
+            continue;
+        }
+
+        let token_address = msg.account_keys.get(1);
+        if let None = token_address {
+            eprintln!("\ncouldn't get token address {}", sig);
+            continue;
+        }
+
+        let token_address = token_address.unwrap();
+
+        db.execute(
+            "INSERT INTO tokens
+            (token_address, metadata_address, genesis_signature) values
+            (?1           , ?2              , ?3               )",
+            params![
+                token_address.to_string(),
+                metadata_address.to_string(),
+                sig.to_string(),
+            ],
+        )
+        .expect("could not insert token!!");
+    }
+}
+
+fn show_candy_machine(app_options: AppOptions, opts: ShowCandyMachine) {
     let client = RpcClient::new(app_options.rpc_url);
 
     for arg in opts.args {
@@ -247,45 +352,48 @@ fn default_rpc_url() -> String {
     "https://api.mainnet-beta.solana.com".to_owned()
 }
 
-// fn list_transactions(app_options: AppOptions, opts: ListTransactionsOpts) {
+fn default_db_path() -> String {
+    "candy-holders.db".to_owned()
+}
+
+// #[derive(Clone, Debug, Options)]
+// struct ListTransactionsOpts {
+//     #[options(free)]
+//     args: Vec<String>,
+//     #[options(help = "search for transactions before this one")]
+//     before: Option<String>,
+// }
+
+// fn find_metadata_accounts(app_options: AppOptions, opts: FindMetadataAccounts) {
 //     let client = RpcClient::new(app_options.rpc_url);
-//     for arg in opts.args {
-//         let cm_id = &arg.parse().expect("could not parse candy machine pubkey");
-//         let mut before: Option<Signature> = None;
-//         if let Some(sig) = opts.before.clone() {
-//             let sig = Signature::from_str(&sig).expect("could not parse before");
-//             before = Some(sig);
-//         }
-//         while {
-//             let cm_sig_config = GetConfirmedSignaturesForAddress2Config {
-//                 before,
-//                 until: None,
-//                 limit: Some(1000),
-//                 commitment: Some(CommitmentConfig::finalized()),
-//             };
-//             let cm_sigs = client
-//                 .get_signatures_for_address_with_config(&cm_id, cm_sig_config)
-//                 .expect("could not get candy machine signatures");
-//             let is_empty = cm_sigs.is_empty();
-//             for cm_sig in cm_sigs {
-//                 eprint!("{}", ".");
-//                 if cm_sig.err.is_none() {
-//                     let sig = Signature::from_str(&cm_sig.signature).expect("could not parse sig");
-//                     before = Some(sig);
-//                     let tx = client.get_transaction(&sig, UiTransactionEncoding::Base58);
-//                     if let Ok(tx) = tx {
-//                         let tx = tx.transaction;
-//                         let tx = tx.transaction.decode().expect("could not decode sig tx");
-//                         let msg = tx.message();
-//                         if msg.instructions.len() == 5 {
-//                             println!("{}", sig);
-//                         }
-//                     } else {
-//                         eprintln!("\n{} {:?}", sig, tx.err());
-//                     }
-//                 }
-//             }
-//             !is_empty
-//         } {}
+
+//     let cfg = RpcProgramAccountsConfig {
+//         account_config: RpcAccountInfoConfig {
+//             encoding: Some(UiAccountEncoding::Base64Zstd),
+//             ..RpcAccountInfoConfig::default()
+//         },
+//         filters: Some(vec![RpcFilterType::Memcmp(Memcmp {
+//             offset: 1,
+//             bytes: MemcmpEncodedBytes::Binary(opts.update_authority),
+//             encoding: None,
+//         })]),
+//         ..RpcProgramAccountsConfig::default()
+//     };
+
+//     let pubkey = &"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+//         .parse()
+//         .unwrap();
+
+//     let program_accounts = client
+//         .get_program_accounts_with_config(pubkey, cfg)
+//         .expect("could not get program accounts");
+
+//     for (pubkey, _account) in program_accounts {
+//         println!("{}", pubkey);
+
+//         // Getting Metadata:
+//         // let mut buf = account.data();
+//         // let metadata = Metadata::deserialize(&mut buf).expect("could not deserialize metadata");
+//         // println!("\t{}", metadata.update_authority);
 //     }
 // }
