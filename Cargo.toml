@@ -1,0 +1,18 @@
+[package]
+name = "candy-holders"
+version = "0.1.0"
+authors = ["Levi Cook <levicook@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anchor-lang = "0.14.0"
+borsh = "0.9.1"
+gumdrop = { version = "0.8.0", features = ["default_expr"] }
+nft-candy-machine = { git = "https://github.com/metaplex-foundation/metaplex" }
+spl-token-metadata = { git = "https://github.com/metaplex-foundation/metaplex" }
+solana-account-decoder = "1.7.11"
+solana-client = "1.7.10"
+solana-sdk = "1.7.10"
+solana-transaction-status = "1.7.10"
