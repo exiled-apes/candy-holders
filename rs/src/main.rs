@@ -120,7 +120,7 @@ fn mine_tokens_by_update_authority(app_options: AppOptions, opts: ByUpdateAuthor
 
         let count = count.unwrap();
         if count >= 1u8 {
-            eprint!("{}", ".");
+            eprint!("{}", "-");
             continue;
         } else {
             eprint!("{}", "+");
