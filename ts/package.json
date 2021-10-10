@@ -2,5 +2,10 @@
   "devDependencies": {
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.29.2",
+    "commander": "^8.2.0",
+    "p-retry": "^4.6.1"
   }
 }
