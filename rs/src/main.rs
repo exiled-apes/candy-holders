@@ -114,49 +114,42 @@ fn main() -> Result<()> {
     }
 }
 
-fn repair_metabaes(app_options: AppOptions, _opts: RepeairMetabaesArgs) -> Result<()> {
-    let db = Connection::open(app_options.db_path)?;
+fn repair_metabaes(_app_options: AppOptions, _opts: RepeairMetabaesArgs) -> Result<()> {
+    // let db = Connection::open(app_options.db_path)?;
 
-    // let mut stmt = db.prepare("SELECT token_address, metadata_address, key, update_authority, mint, name, symbol, uri, seller_fee_basis_points, primary_sale_happened, is_mutable, edition_nonce FROM metadatas where name = ?1;")?;
+    // let mut stmt = db.prepare("SELECT token_address, metadata_address, key, update_authority, mint, name, symbol, uri, seller_fee_basis_points, primary_sale_happened, is_mutable, edition_nonce FROM metadatas where name like ?1;")?;
 
-    for n in 0..1000 {
-        let name = format!("Metabaes #{}", n);
+    // for n in 0..1000 {
+    //     let name = format!("Metabaes #{}", n);
+    //     // let count: Result<u8, rusqlite::Error> = db.query_row(
+    //     //     "select count(*) from metadatas where name like ?1",
+    //     //     params![name],
+    //     //     |row| row.get(0),
+    //     // );
+    //     // println!("{} {}", count.unwrap(), name);
 
-        let count: Result<u8, rusqlite::Error> = db.query_row(
-            "select count(*) from metadatas where name like ?1",
-            params![name],
-            |row| row.get(0),
-        );
+    //     let mut metadata_row_iter = stmt.query_map(params![name], |row| {
+    //         Ok(MetadataRow {
+    //             token_address: row.get(0)?,
+    //             metadata_address: row.get(1)?,
+    //             key: row.get(2)?,
+    //             update_authority: row.get(3)?,
+    //             mint: row.get(4)?,
+    //             name: row.get(5)?,
+    //             symbol: row.get(6)?,
+    //             uri: row.get(7)?, // <<<<===================== WTF: comes back with 200 bytes / all noise
+    //             seller_fee_basis_points: row.get(8)?,
+    //             primary_sale_happened: row.get(9)?,
+    //             is_mutable: row.get(10)?,
+    //             edition_nonce: row.get(11)?,
+    //         })
+    //     })?;
 
-        println!("{} {}", count.unwrap(), name);
+    //     let row0 = metadata_row_iter.nth(0).unwrap().unwrap();
+    //     // let row2 = metadata_row_iter.nth(1).unwrap().unwrap();
 
-        // let metadata_row_iter = stmt.query_map([], |row| {
-        //     Ok(MetadataRow {
-        //         token_address: row.get(0)?,
-        //         metadata_address: row.get(1)?,
-        //         key: row.get(2)?,
-        //         update_authority: row.get(3)?,
-        //         mint: row.get(4)?,
-        //         name: row.get(5)?,
-        //         symbol: row.get(6)?,
-        //         uri: row.get(7)?,
-        //         seller_fee_basis_points: row.get(8)?,
-        //         primary_sale_happened: row.get(9)?,
-        //         is_mutable: row.get(10)?,
-        //         edition_nonce: row.get(11)?,
-        //     })
-        // })?;
-
-        // for metadata_row in metadata_row_iter {
-        //     let metadata_row = metadata_row.unwrap();
-        //     let _ = metadata_row;
-
-        //     eprintln!(
-        //         "{} {} {}",
-        //         metadata_row.token_address, metadata_row.metadata_address, metadata_row.uri
-        //     );
-        // }
-    }
+    //     println!("{}", row0.uri.trim(),);
+    // }
 
     Ok(())
 }
