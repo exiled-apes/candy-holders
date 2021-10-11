@@ -1,0 +1,110 @@
+{
+  "image": "https://www.arweave.net/s65K-baKpIBHtfM1D19gmqjYvVCs5lA9jQm-XPQJyCo?ext=png",
+  "name": "Metabaes #8058",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Blue Sphere"
+    },
+    {
+      "trait_type": "Hair Updo",
+      "value": "Pink Bun"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "White"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Albino"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Double"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Grinning"
+    },
+    {
+      "trait_type": "Birth Marks",
+      "value": "Multi Face Right"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Shocked"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Normal"
+    },
+    {
+      "trait_type": "Skin Mark",
+      "value": "Triangle Paint"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Black Leather"
+    },
+    {
+      "trait_type": "Undershirt",
+      "value": "Black Casual"
+    },
+    {
+      "trait_type": "Facial Accessory",
+      "value": "Gold Ring"
+    },
+    {
+      "trait_type": "Eye Wear",
+      "value": "Reading Glasses"
+    },
+    {
+      "trait_type": "Sideburns",
+      "value": "Light Brown"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "Brunette Fade"
+    },
+    {
+      "trait_type": "Lower Neck",
+      "value": "Blue Ribbon"
+    },
+    {
+      "trait_type": "Effect",
+      "value": "Orbs"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/s65K-baKpIBHtfM1D19gmqjYvVCs5lA9jQm-XPQJyCo?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

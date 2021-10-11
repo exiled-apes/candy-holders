@@ -1,0 +1,114 @@
+{
+  "image": "https://www.arweave.net/LpFmEdTNZNTmm6tC20R-hv5vL-i4EIpgiDD0bBnAIHU?ext=png",
+  "name": "Metabaes #8357",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Blue Fade"
+    },
+    {
+      "trait_type": "Hair Updo",
+      "value": "Blonde Twin Buns"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "Black"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Brown"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Red Pig"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Grinning"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Happy"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Questionable"
+    },
+    {
+      "trait_type": "Skin Mark",
+      "value": "Triangle Paint"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Bandages"
+    },
+    {
+      "trait_type": "Undershirt",
+      "value": "White Casual"
+    },
+    {
+      "trait_type": "Shirt",
+      "value": "Green Sleeveless Cardigan"
+    },
+    {
+      "trait_type": "Jacket",
+      "value": "Peach Kimono"
+    },
+    {
+      "trait_type": "Facial Accessory",
+      "value": "Steel Tridot"
+    },
+    {
+      "trait_type": "Hat",
+      "value": "Maid"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "Black Bangs"
+    },
+    {
+      "trait_type": "Hair Accessory",
+      "value": "Black Leaves"
+    },
+    {
+      "trait_type": "Upper Neck",
+      "value": "Stitches"
+    },
+    {
+      "trait_type": "Effect",
+      "value": "Cherry Blossoms"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/LpFmEdTNZNTmm6tC20R-hv5vL-i4EIpgiDD0bBnAIHU?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

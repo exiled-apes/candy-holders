@@ -1,0 +1,102 @@
+{
+  "image": "https://www.arweave.net/9ccuHAuqQbk3aNMfsgzRlmMd9D7A4OqDmGDAk4IOxso?ext=png",
+  "name": "Metabaes #8583",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Blue Sphere"
+    },
+    {
+      "trait_type": "Back Hair",
+      "value": "Crazy Green"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "Chewed Zombie"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Brown"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Mini"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Happy"
+    },
+    {
+      "trait_type": "Birth Marks",
+      "value": "Right Eye"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Alien"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Angry"
+    },
+    {
+      "trait_type": "Skin Mark",
+      "value": "Whisker Paint"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Pink Lingerie"
+    },
+    {
+      "trait_type": "Shirt",
+      "value": "Green Sleeveless Cardigan"
+    },
+    {
+      "trait_type": "Facial Accessory",
+      "value": "Silver Tridot"
+    },
+    {
+      "trait_type": "Hat",
+      "value": "Multicolor Ribbon"
+    },
+    {
+      "trait_type": "Head Accesory",
+      "value": "Fox"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "Pink Split"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/9ccuHAuqQbk3aNMfsgzRlmMd9D7A4OqDmGDAk4IOxso?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

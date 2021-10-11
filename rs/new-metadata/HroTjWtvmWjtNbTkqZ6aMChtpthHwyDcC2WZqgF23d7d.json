@@ -1,0 +1,118 @@
+{
+  "image": "https://www.arweave.net/az-MO0oTZX3m3PWXOc7HpVSGN4WOvCB9XlZyXjXb73M?ext=png",
+  "name": "Metabaes #8509",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Green Dot"
+    },
+    {
+      "trait_type": "Hair Updo",
+      "value": "Green Ponytail"
+    },
+    {
+      "trait_type": "Back Hair",
+      "value": "Long Blue"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "Long Zombie"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Robot"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Triangle"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Tasty"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Button"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Enraged"
+    },
+    {
+      "trait_type": "Facial Expression",
+      "value": "Hyper Blush"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Black Leather"
+    },
+    {
+      "trait_type": "Facial Accessory",
+      "value": "Silver Ring"
+    },
+    {
+      "trait_type": "Eye Wear",
+      "value": "Green Techglass"
+    },
+    {
+      "trait_type": "Sideburns",
+      "value": "Dark Purple"
+    },
+    {
+      "trait_type": "Hat",
+      "value": "Pumpkin"
+    },
+    {
+      "trait_type": "Head Accesory",
+      "value": "Fairy"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "White"
+    },
+    {
+      "trait_type": "Upper Neck",
+      "value": "Ring Choker"
+    },
+    {
+      "trait_type": "Lower Neck",
+      "value": "Black Bandana"
+    },
+    {
+      "trait_type": "Pet",
+      "value": "Bear"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/az-MO0oTZX3m3PWXOc7HpVSGN4WOvCB9XlZyXjXb73M?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

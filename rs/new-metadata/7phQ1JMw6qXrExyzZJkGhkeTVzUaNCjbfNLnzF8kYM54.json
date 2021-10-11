@@ -1,0 +1,106 @@
+{
+  "image": "https://www.arweave.net/FuB9NDD77F6n1N_xd9ap2EpTxCVUbdAjs_o53hVEfMU?ext=png",
+  "name": "Metabaes #8331",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Yellow Sphere"
+    },
+    {
+      "trait_type": "Hair Updo",
+      "value": "Brown Twintails"
+    },
+    {
+      "trait_type": "Back Hair",
+      "value": "Long Pink"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "Black"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Yellow"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Mini"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Sad"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Shocked"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Excited"
+    },
+    {
+      "trait_type": "Skin Mark",
+      "value": "Cheek Scar"
+    },
+    {
+      "trait_type": "Facial Expression",
+      "value": "Comic Blush"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Silk"
+    },
+    {
+      "trait_type": "Undershirt",
+      "value": "White Casual"
+    },
+    {
+      "trait_type": "Sideburns",
+      "value": "Dark Purple"
+    },
+    {
+      "trait_type": "Head Accesory",
+      "value": "Fairy"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "Blue"
+    },
+    {
+      "trait_type": "Hair Accessory",
+      "value": "Pins"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/FuB9NDD77F6n1N_xd9ap2EpTxCVUbdAjs_o53hVEfMU?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

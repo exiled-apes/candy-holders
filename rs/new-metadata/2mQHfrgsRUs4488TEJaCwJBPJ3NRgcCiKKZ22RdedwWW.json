@@ -1,0 +1,106 @@
+{
+  "image": "https://www.arweave.net/Xi4vHUurNb5pmHgWrl_RAgm-lat36nXIRiBrdyKTHi0?ext=png",
+  "name": "Metabaes #7939",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Blue Sphere"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "White"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Yellow"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Wide"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Happy"
+    },
+    {
+      "trait_type": "Birth Marks",
+      "value": "Multi Face Right"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Tweaky"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Angry"
+    },
+    {
+      "trait_type": "Skin Mark",
+      "value": "Stitches"
+    },
+    {
+      "trait_type": "Facial Expression",
+      "value": "Blush"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Neck lace"
+    },
+    {
+      "trait_type": "Hat",
+      "value": "Chef"
+    },
+    {
+      "trait_type": "Head Accesory",
+      "value": "Antlers"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "Neon Bangs"
+    },
+    {
+      "trait_type": "Upper Neck",
+      "value": "Bell Choker"
+    },
+    {
+      "trait_type": "Lower Neck",
+      "value": "Gold Ribbon"
+    },
+    {
+      "trait_type": "Pet",
+      "value": "Cat"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/Xi4vHUurNb5pmHgWrl_RAgm-lat36nXIRiBrdyKTHi0?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

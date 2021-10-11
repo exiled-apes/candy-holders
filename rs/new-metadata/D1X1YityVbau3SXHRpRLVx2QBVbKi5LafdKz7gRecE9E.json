@@ -1,0 +1,106 @@
+{
+  "image": "https://www.arweave.net/gdN0LUWMfaN7hA0_cf5DPe6hFn07pXCYRcY5afno9PE?ext=png",
+  "name": "Metabaes #7938",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Purple Dot"
+    },
+    {
+      "trait_type": "Overhead",
+      "value": "Crystals"
+    },
+    {
+      "trait_type": "Back Hair",
+      "value": "Long Black"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "White"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Robot"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Red Pig"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Sad"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Alien"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Normal"
+    },
+    {
+      "trait_type": "Facial Expression",
+      "value": "Darkened"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Bandages"
+    },
+    {
+      "trait_type": "Undershirt",
+      "value": "Crossneck"
+    },
+    {
+      "trait_type": "Jacket",
+      "value": "Blue Suspenders"
+    },
+    {
+      "trait_type": "Facial Accessory",
+      "value": "Steel Tridot"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "Ginger"
+    },
+    {
+      "trait_type": "Hair Accessory",
+      "value": "Sakura"
+    },
+    {
+      "trait_type": "Effect",
+      "value": "Cherry Blossoms"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/gdN0LUWMfaN7hA0_cf5DPe6hFn07pXCYRcY5afno9PE?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

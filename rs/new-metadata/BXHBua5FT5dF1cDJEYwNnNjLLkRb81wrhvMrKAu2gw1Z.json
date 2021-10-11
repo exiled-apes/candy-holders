@@ -1,0 +1,98 @@
+{
+  "image": "https://www.arweave.net/p8E-CMYvBfvmlkGmA_Wp4vu6bpr2zT9Os_fJySTYIbk?ext=png",
+  "name": "Metabaes #8121",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Blue Fade"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "White"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Albino"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Wide"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Grinning"
+    },
+    {
+      "trait_type": "Birth Marks",
+      "value": "Chin"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Happy"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Angry"
+    },
+    {
+      "trait_type": "Facial Expression",
+      "value": "Hyper Blush"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Pink Lingerie"
+    },
+    {
+      "trait_type": "Jacket",
+      "value": "Raincoat"
+    },
+    {
+      "trait_type": "Eye Wear",
+      "value": "Eyepatch"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "Green"
+    },
+    {
+      "trait_type": "Lower Neck",
+      "value": "Black Bandana"
+    },
+    {
+      "trait_type": "Pet",
+      "value": "Grey Hamster"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/p8E-CMYvBfvmlkGmA_Wp4vu6bpr2zT9Os_fJySTYIbk?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

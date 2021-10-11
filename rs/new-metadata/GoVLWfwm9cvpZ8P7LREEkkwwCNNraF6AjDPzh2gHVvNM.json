@@ -1,0 +1,102 @@
+{
+  "image": "https://www.arweave.net/x1hGa0yGxkG8QCmf0kOUO7tXkhO0Y_XCzUDDfAJVqzQ?ext=png",
+  "name": "Metabaes #8199",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Pink Dot"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "White"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Brown"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Red Pig"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Happy"
+    },
+    {
+      "trait_type": "Birth Marks",
+      "value": "Multi Face Left"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Tired"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Realistic"
+    },
+    {
+      "trait_type": "Skin Mark",
+      "value": "Nose Scar"
+    },
+    {
+      "trait_type": "Facial Expression",
+      "value": "Blush"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Black Leather"
+    },
+    {
+      "trait_type": "Undershirt",
+      "value": "White Casual"
+    },
+    {
+      "trait_type": "Facial Accessory",
+      "value": "Gold Ring"
+    },
+    {
+      "trait_type": "Hair Strand",
+      "value": "Pink"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "Green"
+    },
+    {
+      "trait_type": "Lower Neck",
+      "value": "Green Thick Ribbon"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/x1hGa0yGxkG8QCmf0kOUO7tXkhO0Y_XCzUDDfAJVqzQ?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

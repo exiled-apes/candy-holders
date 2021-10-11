@@ -1,0 +1,118 @@
+{
+  "image": "https://www.arweave.net/np68xRh2tB9dBwbvKnzB864_Az4WAmJX-KXg8kw74KA?ext=png",
+  "name": "Metabaes #8072",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Space"
+    },
+    {
+      "trait_type": "Back Hair",
+      "value": "Long Black"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "White"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Brown"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Triangle"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Sad"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Smug"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Questionable"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Silk"
+    },
+    {
+      "trait_type": "Undershirt",
+      "value": "Grey Tank"
+    },
+    {
+      "trait_type": "Shirt",
+      "value": "Blue Jersey"
+    },
+    {
+      "trait_type": "Jacket",
+      "value": "Raincoat"
+    },
+    {
+      "trait_type": "Facial Accessory",
+      "value": "Gold Ring"
+    },
+    {
+      "trait_type": "Eye Wear",
+      "value": "Purple Rose"
+    },
+    {
+      "trait_type": "Head Accesory",
+      "value": "Bull"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "Brunette Fade"
+    },
+    {
+      "trait_type": "Hair Accessory",
+      "value": "Butterflies"
+    },
+    {
+      "trait_type": "Upper Neck",
+      "value": "Bloody Stitches"
+    },
+    {
+      "trait_type": "Pet",
+      "value": "Pink Bunny Plush"
+    },
+    {
+      "trait_type": "Effect",
+      "value": "Feathers"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/np68xRh2tB9dBwbvKnzB864_Az4WAmJX-KXg8kw74KA?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

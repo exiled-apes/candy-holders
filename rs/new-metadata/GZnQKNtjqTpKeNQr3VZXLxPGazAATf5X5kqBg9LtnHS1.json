@@ -1,0 +1,94 @@
+{
+  "image": "https://www.arweave.net/gVn03Wp-l2xcLMzkVlcrp_CseY5oZ1cnsaPp6ouZ-_o?ext=png",
+  "name": "Metabaes #8398",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Sky"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "White"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Yellow"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Mini"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Disappointed"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Happy"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Questionable"
+    },
+    {
+      "trait_type": "Facial Expression",
+      "value": "Hyper Blush"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Red Loop"
+    },
+    {
+      "trait_type": "Undershirt",
+      "value": "Blue Polo"
+    },
+    {
+      "trait_type": "Sideburns",
+      "value": "Neon"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "Brown"
+    },
+    {
+      "trait_type": "Hair Accessory",
+      "value": "Black Leaves"
+    },
+    {
+      "trait_type": "Lower Neck",
+      "value": "White Pearls"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/gVn03Wp-l2xcLMzkVlcrp_CseY5oZ1cnsaPp6ouZ-_o?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

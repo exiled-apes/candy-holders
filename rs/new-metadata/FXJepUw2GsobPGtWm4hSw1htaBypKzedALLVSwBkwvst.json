@@ -1,0 +1,106 @@
+{
+  "image": "https://www.arweave.net/AuQnU7dAmdXv-wnekybTsKb-9jZQWrOmZ5la8v1-8QE?ext=png",
+  "name": "Metabaes #8507",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Purple Dot"
+    },
+    {
+      "trait_type": "Wings",
+      "value": "Insect"
+    },
+    {
+      "trait_type": "Overhead",
+      "value": "Roses"
+    },
+    {
+      "trait_type": "Hair Updo",
+      "value": "Red Bun"
+    },
+    {
+      "trait_type": "Back Hair",
+      "value": "Long Blue"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "Black"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "White"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Dotted"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Rough"
+    },
+    {
+      "trait_type": "Birth Marks",
+      "value": "Right Eye"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Happy"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Excited"
+    },
+    {
+      "trait_type": "Facial Expression",
+      "value": "Blush"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Black Leather"
+    },
+    {
+      "trait_type": "Undershirt",
+      "value": "Black Tank"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "Blue"
+    },
+    {
+      "trait_type": "Upper Neck",
+      "value": "Lock Choker"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/AuQnU7dAmdXv-wnekybTsKb-9jZQWrOmZ5la8v1-8QE?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

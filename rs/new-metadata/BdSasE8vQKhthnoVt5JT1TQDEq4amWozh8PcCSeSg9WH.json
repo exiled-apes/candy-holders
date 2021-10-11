@@ -1,0 +1,134 @@
+{
+  "image": "https://www.arweave.net/aPvN6qhrmLZ3TYw8CxOyxwKGKAO90Mld5IEyY7w-5lw?ext=png",
+  "name": "Metabaes #8356",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Blue Sphere"
+    },
+    {
+      "trait_type": "Overhead",
+      "value": "Halo"
+    },
+    {
+      "trait_type": "Hair Updo",
+      "value": "Blonde Twin Buns"
+    },
+    {
+      "trait_type": "Back Hair",
+      "value": "Long Pink"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "Black"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Zombie"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Red Pig"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Welcoming"
+    },
+    {
+      "trait_type": "Birth Marks",
+      "value": "Forehead"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Smug"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Sorrowful"
+    },
+    {
+      "trait_type": "Skin Mark",
+      "value": "Scratches"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Blue Dotted"
+    },
+    {
+      "trait_type": "Undershirt",
+      "value": "Blue Polo"
+    },
+    {
+      "trait_type": "Shirt",
+      "value": "Black Samurai Vest"
+    },
+    {
+      "trait_type": "Jacket",
+      "value": "Pink Pajama"
+    },
+    {
+      "trait_type": "Eye Wear",
+      "value": "Blue Techglass"
+    },
+    {
+      "trait_type": "Sideburns",
+      "value": "Light Purple"
+    },
+    {
+      "trait_type": "Head Accesory",
+      "value": "Fox"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "White"
+    },
+    {
+      "trait_type": "Hair Accessory",
+      "value": "Moonstar"
+    },
+    {
+      "trait_type": "Upper Neck",
+      "value": "Bell Choker"
+    },
+    {
+      "trait_type": "Lower Neck",
+      "value": "Purple Bandana"
+    },
+    {
+      "trait_type": "Pet",
+      "value": "Pink Bunny Plush"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/aPvN6qhrmLZ3TYw8CxOyxwKGKAO90Mld5IEyY7w-5lw?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

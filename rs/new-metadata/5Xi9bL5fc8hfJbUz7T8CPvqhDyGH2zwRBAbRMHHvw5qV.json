@@ -1,0 +1,102 @@
+{
+  "image": "https://www.arweave.net/n4J0-Od2sAvOWLkVChVo0GsJoAkIL4pZeT8OdQo6A9Y?ext=png",
+  "name": "Metabaes #7978",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Space"
+    },
+    {
+      "trait_type": "Back Hair",
+      "value": "Short Green"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "White"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Black"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Pig"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Grinning"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Smug"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Normal"
+    },
+    {
+      "trait_type": "Facial Expression",
+      "value": "Hyper Blush"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Silk"
+    },
+    {
+      "trait_type": "Shirt",
+      "value": "Green Sleeveless Cardigan"
+    },
+    {
+      "trait_type": "Facial Accessory",
+      "value": "Silver Dangle"
+    },
+    {
+      "trait_type": "Hat",
+      "value": "Multicolor Ribbon"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "Blue"
+    },
+    {
+      "trait_type": "Upper Neck",
+      "value": "Mini Bell Choker"
+    },
+    {
+      "trait_type": "Lower Neck",
+      "value": "Pink Ribbon"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/n4J0-Od2sAvOWLkVChVo0GsJoAkIL4pZeT8OdQo6A9Y?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

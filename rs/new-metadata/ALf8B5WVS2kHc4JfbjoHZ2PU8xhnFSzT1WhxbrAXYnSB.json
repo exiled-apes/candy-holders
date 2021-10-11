@@ -1,0 +1,106 @@
+{
+  "image": "https://www.arweave.net/xnjWmWIqLb0cYId3w7D7Nu4dT8UiGRy5xiVKdyPgATM?ext=png",
+  "name": "Metabaes #8107",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Purple Sphere"
+    },
+    {
+      "trait_type": "Back Hair",
+      "value": "Long Pink"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "Long White"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Yellow"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Dotted"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Smiley Tongue"
+    },
+    {
+      "trait_type": "Birth Marks",
+      "value": "Multi Face Left"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Tweaky"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Excited"
+    },
+    {
+      "trait_type": "Facial Expression",
+      "value": "Hyper Blush"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Red Crossed"
+    },
+    {
+      "trait_type": "Undershirt",
+      "value": "Grey Tank"
+    },
+    {
+      "trait_type": "Facial Accessory",
+      "value": "Silver Ring"
+    },
+    {
+      "trait_type": "Sideburns",
+      "value": "Light Purple"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "Ginger"
+    },
+    {
+      "trait_type": "Hair Accessory",
+      "value": "Heart"
+    },
+    {
+      "trait_type": "Upper Neck",
+      "value": "Black Cords"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/xnjWmWIqLb0cYId3w7D7Nu4dT8UiGRy5xiVKdyPgATM?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}

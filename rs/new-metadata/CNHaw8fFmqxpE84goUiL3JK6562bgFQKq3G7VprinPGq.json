@@ -1,0 +1,110 @@
+{
+  "image": "https://www.arweave.net/1phjt4KjJ8by3kcY-WHBpyoKi_xQcKoBR__xssSpAD8?ext=png",
+  "name": "Metabaes #7950",
+  "symbol": "Metabaes",
+  "collection": {
+    "name": "Metabaes",
+    "family": "Metabaes"
+  },
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Green Dot"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "Black"
+    },
+    {
+      "trait_type": "Skin",
+      "value": "Yellow"
+    },
+    {
+      "trait_type": "Nose",
+      "value": "Triangle"
+    },
+    {
+      "trait_type": "Lips",
+      "value": "Grinning"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Tired"
+    },
+    {
+      "trait_type": "Eyebrows",
+      "value": "Sorrowful"
+    },
+    {
+      "trait_type": "Facial Expression",
+      "value": "Blush"
+    },
+    {
+      "trait_type": "Undergarment",
+      "value": "Red Leather"
+    },
+    {
+      "trait_type": "Undershirt",
+      "value": "Crossneck"
+    },
+    {
+      "trait_type": "Facial Accessory",
+      "value": "Gold Ring"
+    },
+    {
+      "trait_type": "Eye Wear",
+      "value": "Red Rose"
+    },
+    {
+      "trait_type": "Hat",
+      "value": "Multicolor Ribbon"
+    },
+    {
+      "trait_type": "Head Accesory",
+      "value": "Antlers"
+    },
+    {
+      "trait_type": "Front Hair",
+      "value": "Black Bangs"
+    },
+    {
+      "trait_type": "Hair Accessory",
+      "value": "Candies"
+    },
+    {
+      "trait_type": "Upper Neck",
+      "value": "Bandages"
+    },
+    {
+      "trait_type": "Lower Neck",
+      "value": "Black Bandana"
+    }
+  ],
+  "seller_fee_basis_points": 500,
+  "properties": {
+    "creators": [
+      {
+        "address": "CUeARnKwwmZrSmadDDtFmPeDivTziRRp71A4Ts1oqJVv",
+        "share": 60
+      },
+      {
+        "address": "DyyngifscumwecUypMTKWFF9HNphPC6ELdaC3gJqFmLp",
+        "share": 32
+      },
+      {
+        "address": "AqwcN2rVLNx6Qx4tp4rxgtFPsXMrE7QWRbD72BbeApjb",
+        "share": 4
+      },
+      {
+        "address": "6vbw2Hdi9T43Lr6gZUchFAT7Qu35E6sVsceBjonKQxwY",
+        "share": 4
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://www.arweave.net/1phjt4KjJ8by3kcY-WHBpyoKi_xQcKoBR__xssSpAD8?ext=png",
+        "type": "image/png"
+      }
+    ]
+  }
+}
