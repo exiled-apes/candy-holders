@@ -47,15 +47,45 @@ struct ByUpdateAuthorityArgs {
 struct MineTokenMetadataArgs {}
 
 #[derive(Clone, Debug, Options)]
+struct RepeairMetabaesArgs {}
+
+#[derive(Clone, Debug, Options)]
 enum Command {
     MineTokensByUpdateAuthority(ByUpdateAuthorityArgs),
     MineTokenMetadata(MineTokenMetadataArgs),
+    RepairMetabaes(RepeairMetabaesArgs),
 }
 
 #[derive(Debug)]
 struct TokenRow {
     token_address: String,
     metadata_address: String,
+    genesis_signature: String,
+    genesis_block_time: i64,
+}
+
+#[derive(Debug)]
+struct MetadataRow {
+    token_address: String,
+    metadata_address: String,
+    key: String,
+    update_authority: String,
+    mint: String,
+    name: String,
+    symbol: String,
+    uri: String,
+    seller_fee_basis_points: u16,
+    primary_sale_happened: bool,
+    is_mutable: bool,
+    edition_nonce: Option<u8>,
+}
+
+#[derive(Debug)]
+struct CreatorRow {
+    metadata_address: String,
+    address: String,
+    share: u8,
+    idx: u8,
 }
 
 fn main() -> Result<()> {
@@ -78,9 +108,57 @@ fn main() -> Result<()> {
                 mine_tokens_by_update_authority(app_options, opts)
             }
             Command::MineTokenMetadata(opts) => mine_token_metadata(app_options, opts),
+            Command::RepairMetabaes(opts) => repair_metabaes(app_options, opts),
         },
         None => todo!(),
     }
+}
+
+fn repair_metabaes(app_options: AppOptions, _opts: RepeairMetabaesArgs) -> Result<()> {
+    let db = Connection::open(app_options.db_path)?;
+
+    // let mut stmt = db.prepare("SELECT token_address, metadata_address, key, update_authority, mint, name, symbol, uri, seller_fee_basis_points, primary_sale_happened, is_mutable, edition_nonce FROM metadatas where name = ?1;")?;
+
+    for n in 0..1000 {
+        let name = format!("Metabaes #{}", n);
+
+        let count: Result<u8, rusqlite::Error> = db.query_row(
+            "select count(*) from metadatas where name like ?1",
+            params![name],
+            |row| row.get(0),
+        );
+
+        println!("{} {}", count.unwrap(), name);
+
+        // let metadata_row_iter = stmt.query_map([], |row| {
+        //     Ok(MetadataRow {
+        //         token_address: row.get(0)?,
+        //         metadata_address: row.get(1)?,
+        //         key: row.get(2)?,
+        //         update_authority: row.get(3)?,
+        //         mint: row.get(4)?,
+        //         name: row.get(5)?,
+        //         symbol: row.get(6)?,
+        //         uri: row.get(7)?,
+        //         seller_fee_basis_points: row.get(8)?,
+        //         primary_sale_happened: row.get(9)?,
+        //         is_mutable: row.get(10)?,
+        //         edition_nonce: row.get(11)?,
+        //     })
+        // })?;
+
+        // for metadata_row in metadata_row_iter {
+        //     let metadata_row = metadata_row.unwrap();
+        //     let _ = metadata_row;
+
+        //     eprintln!(
+        //         "{} {} {}",
+        //         metadata_row.token_address, metadata_row.metadata_address, metadata_row.uri
+        //     );
+        // }
+    }
+
+    Ok(())
 }
 
 fn mine_tokens_by_update_authority(
@@ -88,7 +166,7 @@ fn mine_tokens_by_update_authority(
     opts: ByUpdateAuthorityArgs,
 ) -> Result<()> {
     let client = RpcClient::new(app_options.rpc_url);
-    let db = Connection::open(app_options.db_path).expect("could not open db");
+    let db = Connection::open(app_options.db_path)?;
 
     db.execute(
         "create table if not exists tokens (
@@ -238,11 +316,13 @@ fn mine_token_metadata(app_options: AppOptions, _opts: MineTokenMetadataArgs) ->
         params![],
     )?;
 
-    let mut stmt = db.prepare("SELECT token_address, metadata_address FROM tokens order by genesis_block_time, token_address;")?;
+    let mut stmt = db.prepare("SELECT token_address, metadata_address, genesis_signature, genesis_block_time FROM tokens order by genesis_block_time, token_address;")?;
     let token_row_iter = stmt.query_map([], |row| {
         Ok(TokenRow {
             token_address: row.get(0)?,
             metadata_address: row.get(1)?,
+            genesis_signature: row.get(2)?,
+            genesis_block_time: row.get(3)?,
         })
     })?;
 
