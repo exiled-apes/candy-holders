@@ -11,11 +11,6 @@ use solana_sdk::account::ReadableAccount;
 use solana_transaction_status::UiTransactionEncoding;
 use spl_token_metadata::state::Metadata;
 
-// use nft_candy_machine::{CandyMachine, Config};
-// use solana_sdk::commitment_config::CommitmentConfig;
-// use solana_sdk::signature::Signature;
-// use solana_transaction_status::UiTransactionEncoding;
-
 #[derive(Clone, Debug, Options)]
 struct AppOptions {
     #[options(help = "print help")]
@@ -151,7 +146,7 @@ fn repair_metabaes(app_options: AppOptions, _opts: RepeairMetabaesArgs) -> Resul
             })
         })?;
 
-        let _yay_bae = metadata_row_iter.next().unwrap().unwrap();
+        let _ = metadata_row_iter.next().unwrap().unwrap();
         let sad_bae = metadata_row_iter.next().unwrap().unwrap();
 
         // todo skip if sadBae in repairs
@@ -177,6 +172,19 @@ fn repair_metabaes(app_options: AppOptions, _opts: RepeairMetabaesArgs) -> Resul
             ],
         )?;
     }
+
+    // TODO
+    // - for each repair where old_uri is null
+    // - fetch the metadata json from arweave
+    // - correct the name property
+    // - upload the updated json to arweave
+    // - store the new_uri
+
+    // TODO
+    // - for each repair
+    // - fetch the metadata account from Solana
+    // - if the name or uri isn't correct
+    // - submit a UpdateMetadata instruction
 
     Ok(())
 }
