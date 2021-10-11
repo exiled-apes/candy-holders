@@ -114,42 +114,69 @@ fn main() -> Result<()> {
     }
 }
 
-fn repair_metabaes(_app_options: AppOptions, _opts: RepeairMetabaesArgs) -> Result<()> {
-    // let db = Connection::open(app_options.db_path)?;
+fn repair_metabaes(app_options: AppOptions, _opts: RepeairMetabaesArgs) -> Result<()> {
+    let db = Connection::open(app_options.db_path)?;
 
-    // let mut stmt = db.prepare("SELECT token_address, metadata_address, key, update_authority, mint, name, symbol, uri, seller_fee_basis_points, primary_sale_happened, is_mutable, edition_nonce FROM metadatas where name like ?1;")?;
+    db.execute(
+        "create table if not exists repairs (
+            token_address text primary key,
+            metadata_address text unique,
+            old_name text,
+            new_name text,
+            old_uri text,
+            new_uri text
+        )",
+        params![],
+    )?;
 
-    // for n in 0..1000 {
-    //     let name = format!("Metabaes #{}", n);
-    //     // let count: Result<u8, rusqlite::Error> = db.query_row(
-    //     //     "select count(*) from metadatas where name like ?1",
-    //     //     params![name],
-    //     //     |row| row.get(0),
-    //     // );
-    //     // println!("{} {}", count.unwrap(), name);
+    let mut stmt = db.prepare("SELECT token_address, metadata_address, key, update_authority, mint, name, symbol, uri, seller_fee_basis_points, primary_sale_happened, is_mutable, edition_nonce FROM metadatas where name like ?1")?;
 
-    //     let mut metadata_row_iter = stmt.query_map(params![name], |row| {
-    //         Ok(MetadataRow {
-    //             token_address: row.get(0)?,
-    //             metadata_address: row.get(1)?,
-    //             key: row.get(2)?,
-    //             update_authority: row.get(3)?,
-    //             mint: row.get(4)?,
-    //             name: row.get(5)?,
-    //             symbol: row.get(6)?,
-    //             uri: row.get(7)?, // <<<<===================== WTF: comes back with 200 bytes / all noise
-    //             seller_fee_basis_points: row.get(8)?,
-    //             primary_sale_happened: row.get(9)?,
-    //             is_mutable: row.get(10)?,
-    //             edition_nonce: row.get(11)?,
-    //         })
-    //     })?;
+    for n in 0..1000 {
+        let name = format!("Metabaes #{}", n);
 
-    //     let row0 = metadata_row_iter.nth(0).unwrap().unwrap();
-    //     // let row2 = metadata_row_iter.nth(1).unwrap().unwrap();
+        let mut metadata_row_iter = stmt.query_map(params![name], |row| {
+            Ok(MetadataRow {
+                token_address: row.get(0)?,
+                metadata_address: row.get(1)?,
+                key: row.get(2)?,
+                update_authority: row.get(3)?,
+                mint: row.get(4)?,
+                name: row.get(5)?,
+                symbol: row.get(6)?,
+                uri: row.get(7)?,
+                seller_fee_basis_points: row.get(8)?,
+                primary_sale_happened: row.get(9)?,
+                is_mutable: row.get(10)?,
+                edition_nonce: row.get(11)?,
+            })
+        })?;
 
-    //     println!("{}", row0.uri.trim(),);
-    // }
+        let _yay_bae = metadata_row_iter.next().unwrap().unwrap();
+        let sad_bae = metadata_row_iter.next().unwrap().unwrap();
+
+        // todo skip if sadBae in repairs
+        let count: Result<u8, rusqlite::Error> = db.query_row(
+            "select count(*) from repairs where metadata_address = ?1",
+            params![sad_bae.metadata_address.to_string()],
+            |row| row.get(0),
+        );
+        if count.unwrap() >= 1u8 {
+            continue;
+        }
+
+        db.execute(
+            "INSERT INTO repairs
+            (token_address, metadata_address, old_name, new_name, old_uri) values
+            (           ?1,               ?2,       ?3,       ?4,      ?5)",
+            params![
+                sad_bae.token_address.to_string(),
+                sad_bae.metadata_address.to_string(),
+                sad_bae.name.to_string(),
+                format!("Metabaes #{}", (n + 7888)),
+                sad_bae.uri.to_string(),
+            ],
+        )?;
+    }
 
     Ok(())
 }
@@ -358,9 +385,9 @@ fn mine_token_metadata(app_options: AppOptions, _opts: MineTokenMetadataArgs) ->
                 format!("{:?}",metadata.key),
                 metadata.update_authority.to_string(),
                 metadata.mint.to_string(),
-                metadata.data.name.to_string(),
-                metadata.data.symbol.to_string(),
-                metadata.data.uri.to_string(),
+                metadata.data.name.to_string().trim_matches(char::from(0)),
+                metadata.data.symbol.to_string().trim_matches(char::from(0)),
+                metadata.data.uri.to_string().trim_matches(char::from(0)),
                 metadata.data.seller_fee_basis_points,
                 metadata.primary_sale_happened,
                 metadata.is_mutable,
