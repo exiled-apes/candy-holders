@@ -7,7 +7,9 @@ use solana_client::{
     rpc_config::{RpcAccountInfoConfig, RpcProgramAccountsConfig},
     rpc_filter::{Memcmp, MemcmpEncodedBytes, RpcFilterType},
 };
-use solana_sdk::{account::ReadableAccount, signer::keypair, transaction::Transaction};
+use solana_sdk::{
+    account::ReadableAccount, signer::keypair::read_keypair_file, transaction::Transaction,
+};
 use solana_transaction_status::UiTransactionEncoding;
 use spl_token_metadata::{
     instruction::update_metadata_accounts,
@@ -45,13 +47,16 @@ struct ByUpdateAuthorityArgs {
 struct MineTokenMetadataArgs {}
 
 #[derive(Clone, Debug, Options)]
-struct RepeairMetabaesArgs {}
+struct RepairMetabaesArgs {
+    #[options(help = "path to keypair file")]
+    keypair_path: String,
+}
 
 #[derive(Clone, Debug, Options)]
 enum Command {
     MineTokensByUpdateAuthority(ByUpdateAuthorityArgs),
     MineTokenMetadata(MineTokenMetadataArgs),
-    RepairMetabaes(RepeairMetabaesArgs),
+    RepairMetabaes(RepairMetabaesArgs),
 }
 
 #[derive(Debug)]
@@ -122,7 +127,7 @@ fn main() -> Result<()> {
     }
 }
 
-fn repair_metabaes(app_options: AppOptions, _opts: RepeairMetabaesArgs) -> Result<()> {
+fn repair_metabaes(app_options: AppOptions, opts: RepairMetabaesArgs) -> Result<()> {
     let client = RpcClient::new(app_options.rpc_url);
     let db = Connection::open(app_options.db_path)?;
 
@@ -171,50 +176,52 @@ fn repair_metabaes(app_options: AppOptions, _opts: RepeairMetabaesArgs) -> Resul
                 repair_row.new_uri,
                 metadata.data.uri.to_string().trim_matches(char::from(0))
             );
+
+            let (recent_blockhash, _) = client.get_recent_blockhash().unwrap();
+
+            let program_id = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+                .parse()
+                .unwrap();
+
+            let instruction = update_metadata_accounts(
+                program_id,
+                *metadata_address,
+                metadata.update_authority,
+                Some(metadata.update_authority),
+                Some(Data {
+                    name: repair_row.new_name,
+                    uri: repair_row.new_uri,
+                    symbol: metadata.data.symbol,
+                    seller_fee_basis_points: metadata.data.seller_fee_basis_points,
+                    creators: metadata.data.creators,
+                }),
+                Some(true),
+            );
+
+            let payer = &"EbR4788Gi79GwcT8cANSq4aDHoxD7XrQVGgCfUiML2wX"
+                .parse()
+                .unwrap();
+
+            let instructions = &[instruction];
+            let payer = Some(payer);
+
+            let keypair =
+                read_keypair_file(opts.keypair_path).expect("could not read keypair file");
+            let signing_keypairs = &[&keypair];
+
+            let tx = Transaction::new_signed_with_payer(
+                instructions,
+                payer,
+                signing_keypairs,
+                recent_blockhash,
+            );
+
+            let res = client.simulate_transaction(&tx);
+            let res = res.expect("could not simulate tx");
+            let res = res.value;
+
+            eprintln!("res {:?}", res);
         }
-
-        // TODO log each signature!!
-        let recent_blockhash = client.get_recent_blockhash().unwrap().0;
-
-        let program_id = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
-            .parse()
-            .unwrap();
-
-        let ix = update_metadata_accounts(
-            program_id,
-            *metadata_address,
-            metadata.update_authority,
-            Some(metadata.update_authority),
-            Some(Data {
-                name: repair_row.new_name,
-                uri: repair_row.new_uri,
-                symbol: metadata.data.symbol,
-                seller_fee_basis_points: metadata.data.seller_fee_basis_points,
-                creators: metadata.data.creators,
-            }),
-            Some(true),
-        );
-
-        let payer = &"EbR4788Gi79GwcT8cANSq4aDHoxD7XrQVGgCfUiML2wX"
-            .parse()
-            .unwrap();
-
-// TODO // keypair::read_keypair_file(path)
-
-
-        // TODO need to load up signers:
-        let tx = Transaction::new_signed_with_payer(
-            &[ix],
-            Some(payer),
-            signing_keypairs, // TODO
-            recent_blockhash,
-        );
-
-        let res = client.simulate_transaction(&tx);
-        let res = res.expect("could not simulate tx");
-        let res = res.value;
-
-        eprintln!("res {:?}", res);
 
         break;
     }
