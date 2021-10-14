@@ -132,7 +132,7 @@ fn repair_metabaes(app_options: AppOptions, opts: RepairMetabaesArgs) -> Result<
     let db = Connection::open(app_options.db_path)?;
 
     let mut stmt = db.prepare(
-        "SELECT token_address, metadata_address, old_name, new_name, old_uri, new_uri FROM repairs",
+        "SELECT token_address, metadata_address, old_name, new_name, old_uri, new_uri FROM repairs ORDER BY token_address",
     )?;
 
     let repair_row_iter = stmt.query_map([], |row| {
@@ -165,16 +165,19 @@ fn repair_metabaes(app_options: AppOptions, opts: RepairMetabaesArgs) -> Result<
             repair_row.new_name != metadata.data.name.to_string().trim_matches(char::from(0))
                 || repair_row.new_uri != metadata.data.uri.to_string().trim_matches(char::from(0))
         } {
-            eprintln!("need to repair:");
             eprintln!(
-                "  {} {}",
-                repair_row.new_name,
-                metadata.data.name.to_string().trim_matches(char::from(0))
+                "need to repair: token {}, metadata {}",
+                repair_row.token_address, repair_row.metadata_address
             );
             eprintln!(
-                "  {} {}",
+                "  {} => {}",
+                metadata.data.name.to_string().trim_matches(char::from(0)),
+                repair_row.new_name,
+            );
+            eprintln!(
+                "  {} => {}",
+                metadata.data.uri.to_string().trim_matches(char::from(0)),
                 repair_row.new_uri,
-                metadata.data.uri.to_string().trim_matches(char::from(0))
             );
 
             let (recent_blockhash, _) = client.get_recent_blockhash().unwrap();
@@ -193,6 +196,7 @@ fn repair_metabaes(app_options: AppOptions, opts: RepairMetabaesArgs) -> Result<
                     uri: repair_row.new_uri,
                     symbol: metadata.data.symbol,
                     seller_fee_basis_points: metadata.data.seller_fee_basis_points,
+                    // creators: None, // would erase us as creators
                     creators: metadata.data.creators,
                 }),
                 Some(true),
@@ -218,9 +222,9 @@ fn repair_metabaes(app_options: AppOptions, opts: RepairMetabaesArgs) -> Result<
 
             let res = client.simulate_transaction(&tx);
             let res = res.expect("could not simulate tx");
-            let res = res.value;
+            eprintln!("{:?}", res);
 
-            eprintln!("res {:?}", res);
+            // let res = res.value;
         }
 
         break;
