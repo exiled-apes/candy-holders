@@ -7,9 +7,12 @@ use solana_client::{
     rpc_config::{RpcAccountInfoConfig, RpcProgramAccountsConfig},
     rpc_filter::{Memcmp, MemcmpEncodedBytes, RpcFilterType},
 };
-use solana_sdk::account::ReadableAccount;
+use solana_sdk::{account::ReadableAccount, signer::keypair, transaction::Transaction};
 use solana_transaction_status::UiTransactionEncoding;
-use spl_token_metadata::state::Metadata;
+use spl_token_metadata::{
+    instruction::update_metadata_accounts,
+    state::{Data, Metadata},
+};
 
 #[derive(Clone, Debug, Options)]
 struct AppOptions {
@@ -76,6 +79,16 @@ struct MetadataRow {
 }
 
 #[derive(Debug)]
+struct RepairRow {
+    token_address: String,
+    metadata_address: String,
+    old_name: String,
+    new_name: String,
+    old_uri: String,
+    new_uri: String,
+}
+
+#[derive(Debug)]
 struct CreatorRow {
     metadata_address: String,
     address: String,
@@ -110,68 +123,162 @@ fn main() -> Result<()> {
 }
 
 fn repair_metabaes(app_options: AppOptions, _opts: RepeairMetabaesArgs) -> Result<()> {
+    let client = RpcClient::new(app_options.rpc_url);
     let db = Connection::open(app_options.db_path)?;
 
-    db.execute(
-        "create table if not exists repairs (
-            token_address text primary key,
-            metadata_address text unique,
-            old_name text,
-            new_name text,
-            old_uri text,
-            new_uri text
-        )",
-        params![],
+    let mut stmt = db.prepare(
+        "SELECT token_address, metadata_address, old_name, new_name, old_uri, new_uri FROM repairs",
     )?;
 
-    let mut stmt = db.prepare("SELECT token_address, metadata_address, key, update_authority, mint, name, symbol, uri, seller_fee_basis_points, primary_sale_happened, is_mutable, edition_nonce FROM metadatas where name like ?1")?;
+    let repair_row_iter = stmt.query_map([], |row| {
+        Ok(RepairRow {
+            token_address: row.get(0)?,
+            metadata_address: row.get(1)?,
+            old_name: row.get(2)?,
+            new_name: row.get(3)?,
+            old_uri: row.get(4)?,
+            new_uri: row.get(5)?,
+        })
+    })?;
 
-    for n in 0..1000 {
-        let name = format!("Metabaes #{}", n);
+    for repair_row in repair_row_iter {
+        let repair_row = repair_row.unwrap();
 
-        let mut metadata_row_iter = stmt.query_map(params![name], |row| {
-            Ok(MetadataRow {
-                token_address: row.get(0)?,
-                metadata_address: row.get(1)?,
-                key: row.get(2)?,
-                update_authority: row.get(3)?,
-                mint: row.get(4)?,
-                name: row.get(5)?,
-                symbol: row.get(6)?,
-                uri: row.get(7)?,
-                seller_fee_basis_points: row.get(8)?,
-                primary_sale_happened: row.get(9)?,
-                is_mutable: row.get(10)?,
-                edition_nonce: row.get(11)?,
-            })
-        })?;
+        let metadata_address = &repair_row
+            .metadata_address
+            .parse()
+            .expect("could not parse metadata_address");
 
-        let _ = metadata_row_iter.next().unwrap().unwrap();
-        let sad_bae = metadata_row_iter.next().unwrap().unwrap();
+        let account = client
+            .get_account(metadata_address)
+            .expect("could not fetch metadata account");
 
-        // todo skip if sadBae in repairs
-        let count: Result<u8, rusqlite::Error> = db.query_row(
-            "select count(*) from repairs where metadata_address = ?1",
-            params![sad_bae.metadata_address.to_string()],
-            |row| row.get(0),
-        );
-        if count.unwrap() >= 1u8 {
-            continue;
+        let mut buf = account.data();
+        let metadata = Metadata::deserialize(&mut buf).expect("could not deserialize metadata");
+
+        if {
+            repair_row.new_name != metadata.data.name.to_string().trim_matches(char::from(0))
+                || repair_row.new_uri != metadata.data.uri.to_string().trim_matches(char::from(0))
+        } {
+            eprintln!("need to repair:");
+            eprintln!(
+                "  {} {}",
+                repair_row.new_name,
+                metadata.data.name.to_string().trim_matches(char::from(0))
+            );
+            eprintln!(
+                "  {} {}",
+                repair_row.new_uri,
+                metadata.data.uri.to_string().trim_matches(char::from(0))
+            );
         }
 
-        db.execute(
-            "INSERT INTO repairs
-            (token_address, metadata_address, old_name, new_name, old_uri) values
-            (           ?1,               ?2,       ?3,       ?4,      ?5)",
-            params![
-                sad_bae.token_address.to_string(),
-                sad_bae.metadata_address.to_string(),
-                sad_bae.name.to_string(),
-                format!("Metabaes #{}", (n + 7888)),
-                sad_bae.uri.to_string(),
-            ],
-        )?;
+        // TODO log each signature!!
+        let recent_blockhash = client.get_recent_blockhash().unwrap().0;
+
+        let program_id = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+            .parse()
+            .unwrap();
+
+        let ix = update_metadata_accounts(
+            program_id,
+            *metadata_address,
+            metadata.update_authority,
+            Some(metadata.update_authority),
+            Some(Data {
+                name: repair_row.new_name,
+                uri: repair_row.new_uri,
+                symbol: metadata.data.symbol,
+                seller_fee_basis_points: metadata.data.seller_fee_basis_points,
+                creators: metadata.data.creators,
+            }),
+            Some(true),
+        );
+
+        let payer = &"EbR4788Gi79GwcT8cANSq4aDHoxD7XrQVGgCfUiML2wX"
+            .parse()
+            .unwrap();
+
+// TODO // keypair::read_keypair_file(path)
+
+
+        // TODO need to load up signers:
+        let tx = Transaction::new_signed_with_payer(
+            &[ix],
+            Some(payer),
+            signing_keypairs, // TODO
+            recent_blockhash,
+        );
+
+        let res = client.simulate_transaction(&tx);
+        let res = res.expect("could not simulate tx");
+        let res = res.value;
+
+        eprintln!("res {:?}", res);
+
+        break;
     }
+
+    // db.execute(
+    //     "create table if not exists repairs (
+    //         token_address text primary key,
+    //         metadata_address text unique,
+    //         old_name text,
+    //         new_name text,
+    //         old_uri text,
+    //         new_uri text
+    //     )",
+    //     params![],
+    // )?;
+
+    // let mut stmt = db.prepare("SELECT token_address, metadata_address, key, update_authority, mint, name, symbol, uri, seller_fee_basis_points, primary_sale_happened, is_mutable, edition_nonce FROM metadatas where name like ?1")?;
+
+    // for n in 0..1000 {
+    //     let name = format!("Metabaes #{}", n);
+
+    //     let mut metadata_row_iter = stmt.query_map(params![name], |row| {
+    //         Ok(MetadataRow {
+    //             token_address: row.get(0)?,
+    //             metadata_address: row.get(1)?,
+    //             key: row.get(2)?,
+    //             update_authority: row.get(3)?,
+    //             mint: row.get(4)?,
+    //             name: row.get(5)?,
+    //             symbol: row.get(6)?,
+    //             uri: row.get(7)?,
+    //             seller_fee_basis_points: row.get(8)?,
+    //             primary_sale_happened: row.get(9)?,
+    //             is_mutable: row.get(10)?,
+    //             edition_nonce: row.get(11)?,
+    //         })
+    //     })?;
+
+    //     let _ = metadata_row_iter.next().unwrap().unwrap();
+    //     let sad_bae = metadata_row_iter.next().unwrap().unwrap();
+
+    //     // todo skip if sadBae in repairs
+    //     let count: Result<u8, rusqlite::Error> = db.query_row(
+    //         "select count(*) from repairs where metadata_address = ?1",
+    //         params![sad_bae.metadata_address.to_string()],
+    //         |row| row.get(0),
+    //     );
+    //     if count.unwrap() >= 1u8 {
+    //         continue;
+    //     }
+
+    //     db.execute(
+    //         "INSERT INTO repairs
+    //         (token_address, metadata_address, old_name, new_name, old_uri) values
+    //         (           ?1,               ?2,       ?3,       ?4,      ?5)",
+    //         params![
+    //             sad_bae.token_address.to_string(),
+    //             sad_bae.metadata_address.to_string(),
+    //             sad_bae.name.to_string(),
+    //             format!("Metabaes #{}", (n + 7888)),
+    //             sad_bae.uri.to_string(),
+    //         ],
+    //     )?;
+    // }
 
     // TODO
     // - for each repair where old_uri is null
@@ -378,7 +485,7 @@ fn mine_token_metadata(app_options: AppOptions, _opts: MineTokenMetadataArgs) ->
 
         let account = client
             .get_account(metadata_address)
-            .expect("could not fetch candy machine account");
+            .expect("could not fetch metadata account");
 
         let mut buf = account.data();
         let metadata = Metadata::deserialize(&mut buf).expect("could not deserialize metadata");

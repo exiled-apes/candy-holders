@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "@solana/web3.js": "^1.29.2",
+    "@types/sqlite3": "^3.1.7",
     "arbundles": "^0.2.10",
     "arweave": "^1.10.18",
     "commander": "^8.2.0",

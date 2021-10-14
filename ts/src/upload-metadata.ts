@@ -1,31 +1,25 @@
 import { program } from 'commander'
-import Arweave from 'arweave';
-import { ArweaveSigner, bundleAndSignData, createData } from "arbundles";
+import { ArweaveSigner, createData } from "arbundles";
+const sqlite3 = require('sqlite3').verbose();
 
 import fs from 'fs';
 
 program
     .version('0.0.1')
-    .option('-d, --directory <name>', 'path to directory to upload')
-    .option('-k, --key-path <key-path>', 'path to key file')
+    .option('-d, --directory <path>', 'path to directory to upload')
+    .option('-db, --db-path <path>', 'path to sqlite db')
+    .option('-k, --key-path <path>', 'path to key file')
     .parse()
 
-const arweave = Arweave.init({
-    host: 'arweave.net',
-    port: 443,
-    protocol: 'https'
-});
-
 const main = async () => {
-    const { directory, keyPath } = program.opts()
+    const { directory, dbPath, keyPath } = program.opts()
 
     const jwk = JSON.parse(fs.readFileSync(keyPath, { encoding: 'utf8' }))
 
     const signer = new ArweaveSigner(jwk);
+    let db = new sqlite3.Database(dbPath);
 
-    const files = fs.readdirSync(directory);
-
-    for (const file of files) {
+    for (const file of fs.readdirSync(directory)) {
         const data = fs.readFileSync(`${directory}/${file}`);
 
         const item = createData(data, signer, {
@@ -46,9 +40,15 @@ const main = async () => {
         }
 
         const metadata_address = file.split('.json').shift();
-        const new_url = `https://arweave.net/${response.data.id}`
+        const new_uri = `https://arweave.net/${response.data.id}`
 
-        console.log(metadata_address, ' => ', new_url) // TODO store this in sqlite
+        await db.run("update repairs set new_uri = ? where metadata_address = ?", [
+            new_uri, metadata_address,
+        ])
     }
+
+    await db.close() // todo move outside of loop and delete return
 }
+
+
 main();
