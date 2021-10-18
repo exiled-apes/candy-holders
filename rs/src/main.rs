@@ -163,6 +163,7 @@ fn replace_update_authority(
 
     for repair_row in repair_row_iter {
         let repair_row = repair_row.unwrap();
+
         let metadata_address = &repair_row
             .metadata_address
             .parse()
@@ -180,6 +181,7 @@ fn replace_update_authority(
 
         let new_update_authority = opts.new_update_authority.parse().unwrap();
 
+        eprintln!("repair_row.token_address  {}", repair_row.token_address);
         eprintln!("metadata.update_authority {}", metadata.update_authority);
         eprintln!(
             "current_update_authority  {}",
@@ -217,13 +219,13 @@ fn replace_update_authority(
                 recent_blockhash,
             );
 
-            let res = client.simulate_transaction(&tx);
-            let res = res.expect("could not simulate tx");
-            eprintln!("{:?}", res);
+            // let res = client.simulate_transaction(&tx);
+            // let res = res.expect("could not simulate tx");
+            // eprintln!("{:?}", res);
 
-            // let res = client.send_and_confirm_transaction(&tx);
-            // let sig = res.expect("could not confirm tx");
-            // eprintln!("{:?}", sig);
+            let res = client.send_and_confirm_transaction(&tx);
+            let sig = res.expect("could not confirm tx");
+            eprintln!("{:?}", sig);
         }
     }
 
@@ -251,6 +253,7 @@ fn repair_metabaes(app_options: AppOptions, opts: RepairMetabaesArgs) -> Result<
 
     for repair_row in repair_row_iter {
         let repair_row = repair_row.unwrap();
+        eprintln!("repair_row.token_address  {}", repair_row.token_address);
 
         let metadata_address = &repair_row
             .metadata_address
@@ -307,7 +310,7 @@ fn repair_metabaes(app_options: AppOptions, opts: RepairMetabaesArgs) -> Result<
             let instructions = &[instruction];
 
             let keypair =
-                read_keypair_file(opts.keypair_path).expect("could not read keypair file");
+                read_keypair_file(opts.keypair_path.clone()).expect("could not read keypair file");
 
             let signing_keypairs = &[&keypair];
 
@@ -318,16 +321,14 @@ fn repair_metabaes(app_options: AppOptions, opts: RepairMetabaesArgs) -> Result<
                 recent_blockhash,
             );
 
-            let res = client.simulate_transaction(&tx);
-            let res = res.expect("could not simulate tx");
-            eprintln!("{:?}", res);
+            // let res = client.simulate_transaction(&tx);
+            // let res = res.expect("could not simulate tx");
+            // eprintln!("{:?}", res);
 
-            // let res = client.send_and_confirm_transaction(&tx);
-            // let sig = res.expect("could not confirm tx");
-            // eprintln!("{:?}", sig);
+            let res = client.send_and_confirm_transaction(&tx);
+            let sig = res.expect("could not confirm tx");
+            eprintln!("{:?}", sig);
         }
-
-        break;
     }
 
     // db.execute(
