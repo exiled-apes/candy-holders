@@ -144,35 +144,25 @@ fn replace_update_authority(
     opts: ReplaceUpdateAuthorityArgs,
 ) -> Result<()> {
     let client = RpcClient::new(app_options.rpc_url);
-    // let db = Connection::open(app_options.db_path)?;
+    let db = Connection::open(app_options.db_path)?;
 
-    // let mut stmt = db.prepare(
-    //     "SELECT token_address, metadata_address, old_name, new_name, old_uri, new_uri FROM repairs ORDER BY token_address",
-    // )?;
+    let mut stmt = db.prepare(
+        "SELECT token_address, metadata_address, old_name, new_name, old_uri, new_uri FROM repairs ORDER BY token_address",
+    )?;
 
-    // let repair_row_iter = stmt.query_map([], |row| {
-    //     Ok(RepairRow {
-    //         token_address: row.get(0)?,
-    //         metadata_address: row.get(1)?,
-    //         old_name: row.get(2)?,
-    //         new_name: row.get(3)?,
-    //         old_uri: row.get(4)?,
-    //         new_uri: row.get(5)?,
-    //     })
-    // })?;
+    let repair_row_iter = stmt.query_map([], |row| {
+        Ok(RepairRow {
+            token_address: row.get(0)?,
+            metadata_address: row.get(1)?,
+            old_name: row.get(2)?,
+            new_name: row.get(3)?,
+            old_uri: row.get(4)?,
+            new_uri: row.get(5)?,
+        })
+    })?;
 
-    let repair_rows = vec![RepairRow {
-        token_address: "13SoxH1mtYf9VaXEXqgG9hrPCrgefu77y9Wb7kjbvjoN".to_string(),
-        metadata_address: "2vkJ9RrBTXMXHrRWQ9gRvR1dCrYNSXwL8hA8Kc618zJX".to_string(),
-        old_name: "".to_string(),
-        new_name: "".to_string(),
-        old_uri: "".to_string(),
-        new_uri: "".to_string(),
-    }];
-
-    // for repair_row in repair_row_iter {
-    // let repair_row = repair_row.unwrap();
-    for repair_row in repair_rows {
+    for repair_row in repair_row_iter {
+        let repair_row = repair_row.unwrap();
         let metadata_address = &repair_row
             .metadata_address
             .parse()
@@ -227,16 +217,14 @@ fn replace_update_authority(
                 recent_blockhash,
             );
 
-            // let res = client.simulate_transaction(&tx);
-            // let res = res.expect("could not simulate tx");
-            // eprintln!("{:?}", res);
+            let res = client.simulate_transaction(&tx);
+            let res = res.expect("could not simulate tx");
+            eprintln!("{:?}", res);
 
-            let res = client.send_and_confirm_transaction(&tx);
-            let sig = res.expect("could not confirm tx");
-            eprintln!("{:?}", sig);
+            // let res = client.send_and_confirm_transaction(&tx);
+            // let sig = res.expect("could not confirm tx");
+            // eprintln!("{:?}", sig);
         }
-
-        break;
     }
 
     Ok(())
@@ -247,7 +235,7 @@ fn repair_metabaes(app_options: AppOptions, opts: RepairMetabaesArgs) -> Result<
     let db = Connection::open(app_options.db_path)?;
 
     let mut stmt = db.prepare(
-        "SELECT token_address, metadata_address, old_name, new_name, old_uri, new_uri FROM repairs WHERE token_address='13SoxH1mtYf9VaXEXqgG9hrPCrgefu77y9Wb7kjbvjoN' ORDER BY token_address",
+        "SELECT token_address, metadata_address, old_name, new_name, old_uri, new_uri FROM repairs ORDER BY token_address",
     )?;
 
     let repair_row_iter = stmt.query_map([], |row| {
@@ -330,13 +318,13 @@ fn repair_metabaes(app_options: AppOptions, opts: RepairMetabaesArgs) -> Result<
                 recent_blockhash,
             );
 
-            // let res = client.simulate_transaction(&tx);
-            // let res = res.expect("could not simulate tx");
-            // eprintln!("{:?}", res);
+            let res = client.simulate_transaction(&tx);
+            let res = res.expect("could not simulate tx");
+            eprintln!("{:?}", res);
 
-            let res = client.send_and_confirm_transaction(&tx);
-            let sig = res.expect("could not confirm tx");
-            eprintln!("{:?}", sig);
+            // let res = client.send_and_confirm_transaction(&tx);
+            // let sig = res.expect("could not confirm tx");
+            // eprintln!("{:?}", sig);
         }
 
         break;
