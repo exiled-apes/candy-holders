@@ -8,7 +8,9 @@ use solana_client::{
     rpc_filter::{Memcmp, MemcmpEncodedBytes, RpcFilterType},
 };
 use solana_sdk::{
-    account::ReadableAccount, signer::keypair::read_keypair_file, transaction::Transaction,
+    account::ReadableAccount,
+    signer::{keypair::read_keypair_file, Signer},
+    transaction::Transaction,
 };
 use solana_transaction_status::UiTransactionEncoding;
 use spl_token_metadata::{
@@ -53,10 +55,19 @@ struct RepairMetabaesArgs {
 }
 
 #[derive(Clone, Debug, Options)]
+struct ReplaceUpdateAuthorityArgs {
+    #[options(help = "path to a keypair file")]
+    current_update_authority: String,
+
+    new_update_authority: String,
+}
+
+#[derive(Clone, Debug, Options)]
 enum Command {
     MineTokensByUpdateAuthority(ByUpdateAuthorityArgs),
     MineTokenMetadata(MineTokenMetadataArgs),
     RepairMetabaes(RepairMetabaesArgs),
+    ReplaceUpdateAuthority(ReplaceUpdateAuthorityArgs),
 }
 
 #[derive(Debug)]
@@ -122,9 +133,106 @@ fn main() -> Result<()> {
             }
             Command::MineTokenMetadata(opts) => mine_token_metadata(app_options, opts),
             Command::RepairMetabaes(opts) => repair_metabaes(app_options, opts),
+            Command::ReplaceUpdateAuthority(opts) => replace_update_authority(app_options, opts),
         },
         None => todo!(),
     }
+}
+
+fn replace_update_authority(
+    app_options: AppOptions,
+    opts: ReplaceUpdateAuthorityArgs,
+) -> Result<()> {
+    let client = RpcClient::new(app_options.rpc_url);
+    // let db = Connection::open(app_options.db_path)?;
+
+    // let mut stmt = db.prepare(
+    //     "SELECT token_address, metadata_address, old_name, new_name, old_uri, new_uri FROM repairs ORDER BY token_address",
+    // )?;
+
+    // let repair_row_iter = stmt.query_map([], |row| {
+    //     Ok(RepairRow {
+    //         token_address: row.get(0)?,
+    //         metadata_address: row.get(1)?,
+    //         old_name: row.get(2)?,
+    //         new_name: row.get(3)?,
+    //         old_uri: row.get(4)?,
+    //         new_uri: row.get(5)?,
+    //     })
+    // })?;
+
+    let repair_rows = vec![RepairRow {
+        token_address: "942kwkkt7pLmcAykUG6sYv1CwW2ThzoR1otGcZo9ooMN".to_string(),
+        metadata_address: "8A4ZTATDntVU9nfZmpVV2TRphoCJpBpLosMSJCzV5BV8".to_string(),
+        old_name: "".to_string(),
+        new_name: "".to_string(),
+        old_uri: "".to_string(),
+        new_uri: "".to_string(),
+    }];
+
+    // for repair_row in repair_row_iter {
+    // let repair_row = repair_row.unwrap();
+    for repair_row in repair_rows {
+        let metadata_address = &repair_row
+            .metadata_address
+            .parse()
+            .expect("could not parse metadata_address");
+
+        let account = client
+            .get_account(metadata_address)
+            .expect("could not fetch metadata account");
+
+        let mut buf = account.data();
+        let metadata = Metadata::deserialize(&mut buf).expect("could not deserialize metadata");
+
+        let current_update_authority = read_keypair_file(opts.current_update_authority.clone())
+            .expect("could not read keypair file");
+
+        let new_update_authority = opts.new_update_authority.parse().unwrap();
+
+        eprintln!("metadata.update_authority {}", metadata.update_authority);
+        eprintln!("current_update_authority  {}", current_update_authority.pubkey());
+        eprintln!("new_update_authority      {}", new_update_authority);
+
+        if {
+            metadata.update_authority == current_update_authority.pubkey()
+                && metadata.update_authority != new_update_authority
+        } {
+            let (recent_blockhash, _) = client.get_recent_blockhash().unwrap();
+
+            let program_id = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+                .parse()
+                .unwrap();
+
+            let instruction = update_metadata_accounts(
+                program_id,
+                *metadata_address,
+                metadata.update_authority,
+                Some(new_update_authority),
+                None,
+                None,
+            );
+
+            let instructions = &[instruction];
+
+            let signing_keypairs = &[&current_update_authority];
+
+            let tx = Transaction::new_signed_with_payer(
+                instructions,
+                Some(&current_update_authority.pubkey()),
+                signing_keypairs,
+                recent_blockhash,
+            );
+
+            let res = client.simulate_transaction(&tx);
+            let res = res.expect("could not simulate tx");
+            eprintln!("{:?}", res);
+        }
+
+        break;
+    }
+
+    Ok(())
 }
 
 fn repair_metabaes(app_options: AppOptions, opts: RepairMetabaesArgs) -> Result<()> {
