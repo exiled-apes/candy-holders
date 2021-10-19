@@ -181,18 +181,20 @@ fn replace_update_authority(
 
         let new_update_authority = opts.new_update_authority.parse().unwrap();
 
-        eprintln!("repair_row.token_address  {}", repair_row.token_address);
-        eprintln!("metadata.update_authority {}", metadata.update_authority);
-        eprintln!(
-            "current_update_authority  {}",
-            current_update_authority.pubkey()
-        );
-        eprintln!("new_update_authority      {}", new_update_authority);
+        // eprintln!("repair_row.token_address  {}", repair_row.token_address);
+        // eprintln!("metadata.update_authority {}", metadata.update_authority);
+        // eprintln!(
+        //     "current_update_authority  {}",
+        //     current_update_authority.pubkey()
+        // );
+        // eprintln!("new_update_authority      {}", new_update_authority);
 
         if {
             metadata.update_authority == current_update_authority.pubkey()
                 && metadata.update_authority != new_update_authority
         } {
+            eprintln!("repair_row.token_address  {}", repair_row.token_address);
+
             let (recent_blockhash, _) = client.get_recent_blockhash().unwrap();
 
             let program_id = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
