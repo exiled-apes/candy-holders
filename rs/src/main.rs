@@ -130,9 +130,7 @@ fn mine_token_minter(app_options: AppOptions, _opts: MineTokenMinterArgs) -> Res
         }
         let minter_address = minter_address.unwrap();
 
-        eprintln!("\nminter address {}", minter_address);
-
-        break;
+        println!("{}", minter_address);
     }
 
     Ok(())
