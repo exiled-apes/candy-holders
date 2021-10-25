@@ -47,15 +47,20 @@ struct ByUpdateAuthorityArgs {
 struct MineTokenMetadataArgs {}
 
 #[derive(Clone, Debug, Options)]
+struct MineTokenMinterArgs {}
+
+#[derive(Clone, Debug, Options)]
 enum Command {
     MineTokensByUpdateAuthority(ByUpdateAuthorityArgs),
     MineTokenMetadata(MineTokenMetadataArgs),
+    MineTokenMinter(MineTokenMinterArgs),
 }
 
 #[derive(Debug)]
 struct TokenRow {
     token_address: String,
     metadata_address: String,
+    genesis_signature: String,
 }
 
 fn main() -> Result<()> {
@@ -78,9 +83,59 @@ fn main() -> Result<()> {
                 mine_tokens_by_update_authority(app_options, opts)
             }
             Command::MineTokenMetadata(opts) => mine_token_metadata(app_options, opts),
+            Command::MineTokenMinter(opts) => mine_token_minter(app_options, opts),
         },
         None => todo!(),
     }
+}
+
+fn mine_token_minter(app_options: AppOptions, _opts: MineTokenMinterArgs) -> Result<()> {
+    let client = RpcClient::new(app_options.rpc_url);
+    let db = Connection::open(app_options.db_path).expect("could not open db");
+
+    let mut stmt = db.prepare("SELECT token_address, metadata_address, genesis_signature FROM tokens ORDER BY genesis_block_time, token_address;")?;
+    let token_row_iter = stmt.query_map([], |row| {
+        Ok(TokenRow {
+            token_address: row.get(0)?,
+            metadata_address: row.get(1)?,
+            genesis_signature: row.get(2)?,
+        })
+    })?;
+
+    for token_row in token_row_iter {
+        let token_row = token_row.unwrap();
+        let genesis_signature = &token_row.genesis_signature.parse().unwrap();
+
+        let tx = client.get_transaction(&genesis_signature, UiTransactionEncoding::Base58);
+        if let Err(err) = tx {
+            eprintln!("\ncouldn't get transaction {} {}", genesis_signature, err);
+            continue;
+        }
+
+        let tx = tx.unwrap().transaction;
+        let tx = tx.transaction.decode();
+        if let None = tx {
+            eprintln!("\ncould not decode sig tx {}", genesis_signature);
+            continue;
+        }
+
+        let tx = tx.unwrap();
+
+        let msg = tx.message();
+
+        let minter_address = msg.account_keys.get(0);
+        if let None = minter_address {
+            eprintln!("\ncouldn't get minter address {}", genesis_signature);
+            continue;
+        }
+        let minter_address = minter_address.unwrap();
+
+        eprintln!("\nminter address {}", minter_address);
+
+        break;
+    }
+
+    Ok(())
 }
 
 fn mine_tokens_by_update_authority(
@@ -243,6 +298,7 @@ fn mine_token_metadata(app_options: AppOptions, _opts: MineTokenMetadataArgs) ->
         Ok(TokenRow {
             token_address: row.get(0)?,
             metadata_address: row.get(1)?,
+            genesis_signature: row.get(2)?,
         })
     })?;
 
