@@ -291,7 +291,7 @@ fn mine_token_metadata(app_options: AppOptions, _opts: MineTokenMetadataArgs) ->
         params![],
     )?;
 
-    let mut stmt = db.prepare("SELECT token_address, metadata_address FROM tokens order by genesis_block_time, token_address;")?;
+    let mut stmt = db.prepare("SELECT token_address, metadata_address, genesis_signature FROM tokens order by genesis_block_time, token_address;")?;
     let token_row_iter = stmt.query_map([], |row| {
         Ok(TokenRow {
             token_address: row.get(0)?,
