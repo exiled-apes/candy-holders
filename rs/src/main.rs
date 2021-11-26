@@ -7,14 +7,12 @@ use solana_client::{
     rpc_config::{RpcAccountInfoConfig, RpcProgramAccountsConfig},
     rpc_filter::{Memcmp, MemcmpEncodedBytes, RpcFilterType},
 };
-use solana_sdk::account::ReadableAccount;
+use solana_sdk::{
+    account::ReadableAccount, signature::read_keypair_file, signer::Signer,
+    transaction::Transaction,
+};
 use solana_transaction_status::UiTransactionEncoding;
-use spl_token_metadata::state::Metadata;
-
-// use nft_candy_machine::{CandyMachine, Config};
-// use solana_sdk::commitment_config::CommitmentConfig;
-// use solana_sdk::signature::Signature;
-// use solana_transaction_status::UiTransactionEncoding;
+use spl_token_metadata::{instruction::update_metadata_accounts, state::Metadata};
 
 #[derive(Clone, Debug, Options)]
 struct AppOptions {
@@ -47,9 +45,19 @@ struct ByUpdateAuthorityArgs {
 struct MineTokenMetadataArgs {}
 
 #[derive(Clone, Debug, Options)]
+struct ReplaceUpdateAuthorityArgs {
+    #[options(help = "path to a keypair file")]
+    current_update_authority: String,
+
+    #[options(help = "new update authority address")]
+    new_update_authority: String,
+}
+
+#[derive(Clone, Debug, Options)]
 enum Command {
     MineTokensByUpdateAuthority(ByUpdateAuthorityArgs),
     MineTokenMetadata(MineTokenMetadataArgs),
+    ReplaceUpdateAuthority(ReplaceUpdateAuthorityArgs),
 }
 
 #[derive(Debug)]
@@ -78,6 +86,7 @@ fn main() -> Result<()> {
                 mine_tokens_by_update_authority(app_options, opts)
             }
             Command::MineTokenMetadata(opts) => mine_token_metadata(app_options, opts),
+            Command::ReplaceUpdateAuthority(opts) => replace_update_authority(app_options, opts),
         },
         None => todo!(),
     }
@@ -238,7 +247,7 @@ fn mine_token_metadata(app_options: AppOptions, _opts: MineTokenMetadataArgs) ->
         params![],
     )?;
 
-    let mut stmt = db.prepare("SELECT token_address, metadata_address FROM tokens order by genesis_block_time, token_address;")?;
+    let mut stmt = db.prepare("SELECT token_address, metadata_address FROM tokens ORDER BY genesis_block_time, token_address;")?;
     let token_row_iter = stmt.query_map([], |row| {
         Ok(TokenRow {
             token_address: row.get(0)?,
@@ -309,6 +318,88 @@ fn mine_token_metadata(app_options: AppOptions, _opts: MineTokenMetadataArgs) ->
                     ],
                 )?;
             }
+        }
+    }
+
+    Ok(())
+}
+
+fn replace_update_authority(
+    app_options: AppOptions,
+    opts: ReplaceUpdateAuthorityArgs,
+) -> Result<()> {
+    let client = RpcClient::new(app_options.rpc_url);
+    let db = Connection::open(app_options.db_path)?;
+
+    let mut stmt = db.prepare(
+        "SELECT token_address, metadata_address FROM tokens ORDER BY genesis_block_time, token_address;",
+    )?;
+
+    let token_row_iter = stmt.query_map([], |row| {
+        Ok(TokenRow {
+            token_address: row.get(0)?,
+            metadata_address: row.get(1)?,
+        })
+    })?;
+
+    for token_row in token_row_iter {
+        let token_row = token_row.unwrap();
+
+        let metadata_address = &token_row
+            .metadata_address
+            .parse()
+            .expect("could not parse metadata_address");
+
+        let metadata = client
+            .get_account(metadata_address)
+            .expect("could not fetch metadata account");
+
+        let mut buf = metadata.data();
+        let metadata = Metadata::deserialize(&mut buf).expect("could not deserialize metadata");
+
+        let current_update_authority = read_keypair_file(opts.current_update_authority.clone())
+            .expect("could not read keypair file");
+
+        let new_update_authority = opts.new_update_authority.parse().unwrap();
+
+        if {
+            metadata.update_authority == current_update_authority.pubkey()
+        } {
+            eprintln!("updating token_address {}", token_row.token_address);
+
+            let (recent_blockhash, _) = client.get_recent_blockhash().unwrap();
+
+            let program_id = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+                .parse()
+                .unwrap();
+
+            let instruction = update_metadata_accounts(
+                program_id,
+                *metadata_address,
+                metadata.update_authority,
+                Some(new_update_authority),
+                None,
+                None,
+            );
+
+            let instructions = &[instruction];
+
+            let signing_keypairs = &[&current_update_authority];
+
+            let tx = Transaction::new_signed_with_payer(
+                instructions,
+                Some(&current_update_authority.pubkey()),
+                signing_keypairs,
+                recent_blockhash,
+            );
+
+            let res = client.simulate_transaction(&tx);
+            let res = res.expect("could not simulate tx");
+            eprintln!("{:?}", res);
+
+            // let res = client.send_and_confirm_transaction(&tx);
+            // let sig = res.expect("could not confirm tx");
+            // eprintln!("{:?}", sig);
         }
     }
 
