@@ -17,16 +17,25 @@ async function sleep(millis: number) {
 }
 
 async function mineCurrentHolder(tokenAccount: string): Promise<string | undefined> {
-    const largestAccounts = await connection.getTokenLargestAccounts(new PublicKey(tokenAccount))
-    const largestPDA = largestAccounts.value.shift()
-    const largestWallet = await connection.getParsedAccountInfo(largestPDA?.address!);
-    const data = largestWallet.value?.data.valueOf();
+    try {
+        const largestAccounts = await connection.getTokenLargestAccounts(new PublicKey(tokenAccount))
+        const largestPDA = largestAccounts.value.shift()
 
-    //@ts-ignore
-    return data?.parsed?.info?.owner;
+        if (largestPDA && largestPDA.address) {
+            const largestWallet = await connection.getParsedAccountInfo(largestPDA?.address!);
+            const data = largestWallet.value?.data.valueOf();
+
+            //@ts-ignore
+            return data?.parsed?.info?.owner;
+        }
+    } catch (err) {
+        console.error(err)
+    }
 }
 
 async function main() {
+    const rest = parseInt(chill, 10)
+
     const lineReader = createInterface({
         input: process.stdin,
         crlfDelay: Infinity
@@ -38,8 +47,11 @@ async function main() {
             onFailedAttempt: (err) => console.error(`mining ${tokenAccount} failed.`, err),
             retries: 4,
         })
-        console.log(currentHolder)
-        await sleep(parseInt(chill, 10))
+        if (currentHolder) {
+            console.log(`${currentHolder}, ${tokenAccount}`)
+        }
+
+        await sleep(rest)
     }
 }
 

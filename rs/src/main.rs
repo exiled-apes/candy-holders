@@ -13,6 +13,7 @@ use solana_sdk::{
 };
 use solana_transaction_status::UiTransactionEncoding;
 use spl_token_metadata::{instruction::update_metadata_accounts, state::Metadata};
+use std::time::Duration;
 
 #[derive(Clone, Debug, Options)]
 struct AppOptions {
@@ -96,7 +97,10 @@ fn mine_tokens_by_update_authority(
     app_options: AppOptions,
     opts: ByUpdateAuthorityArgs,
 ) -> Result<()> {
-    let client = RpcClient::new(app_options.rpc_url);
+    // let client = RpcClient::new(app_options.rpc_url);
+
+    let timeout = Duration::from_secs(90);
+    let client = RpcClient::new_with_timeout(app_options.rpc_url, timeout);
     let db = Connection::open(app_options.db_path).expect("could not open db");
 
     db.execute(
@@ -182,14 +186,14 @@ fn mine_tokens_by_update_authority(
         let tx = tx.unwrap();
 
         let msg = tx.message();
-        if msg.instructions.len() != 5 {
-            eprintln!(
-                "\ninvalid instruction count {} {}",
-                pubkey,
-                msg.instructions.len()
-            );
-            continue;
-        }
+        // if msg.instructions.len() != 5 {
+        //     eprintln!(
+        //         "\ninvalid instruction count {} {}",
+        //         pubkey,
+        //         msg.instructions.len()
+        //     );
+        //     continue;
+        // }
 
         let token_address = msg.account_keys.get(1);
         if let None = token_address {
@@ -362,9 +366,7 @@ fn replace_update_authority(
 
         let new_update_authority = opts.new_update_authority.parse().unwrap();
 
-        if {
-            metadata.update_authority == current_update_authority.pubkey()
-        } {
+        if metadata.update_authority == current_update_authority.pubkey() {
             eprintln!("updating token_address {}", token_row.token_address);
 
             let (recent_blockhash, _) = client.get_recent_blockhash().unwrap();
@@ -393,13 +395,17 @@ fn replace_update_authority(
                 recent_blockhash,
             );
 
-            let res = client.simulate_transaction(&tx);
-            let res = res.expect("could not simulate tx");
-            eprintln!("{:?}", res);
+            // let res = client.simulate_transaction(&tx);
+            // let res = res.expect("could not simulate tx");
+            // eprintln!("{:?}", res);
 
             // let res = client.send_and_confirm_transaction(&tx);
             // let sig = res.expect("could not confirm tx");
             // eprintln!("{:?}", sig);
+
+            let res = client.send_transaction(&tx);
+            let sig = res.expect("could not send tx");
+            eprintln!("{:?}", sig);
         }
     }
 
